@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -121,7 +122,13 @@ class MyLocationListener implements LocationListener {
 
             LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
             googleMap.addMarker(new MarkerOptions().position(current).title("Location at " + Calendar.getInstance().getTime().toString()));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+//            googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(current)      // Sets the center of the map to Mountain View
+                    .zoom(15)                   // Sets the zoom
+                    .build();                   // Creates a CameraPosition from the builder
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
     }
 
