@@ -1,5 +1,6 @@
 package edu.bsu.dlts.capstone;
 
+import com.microsoft.windowsazure.mobileservices.*;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -47,7 +48,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +61,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
+
+    private MobileServiceClient mClient;
 
     private SignInButton mGoogleBtn;
 
@@ -95,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -149,6 +156,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        try {
+            mClient = new MobileServiceClient(
+                    "https://dltas.azurewebsites.net",
+                    this
+            );
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        TodoItem item = new TodoItem();
+        item.Text = "Awesome item";
+        mClient.getTable(TodoItem.class).insert(item, new TableOperationCallback<TodoItem>() {
+            public void onCompleted(TodoItem entity, Exception exception, ServiceFilterResponse response) {
+                if (exception == null) {
+                    // Insert succeeded
+                    Log.d("DBTEST", response.getContent());
+                } else {
+                    // Insert failed
+                    Log.d("DBTEST", exception.getMessage());
+                }
+            }
+        });
     }
 
     private void signIn() {
