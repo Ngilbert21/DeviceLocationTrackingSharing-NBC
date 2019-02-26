@@ -126,7 +126,7 @@ class MyLocationListener implements LocationListener {
 //            googleMap.animateCamera(CameraUpdateFactory.zoomIn());
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(current)      // Sets the center of the map to Mountain View
-                    .zoom(15)                   // Sets the zoom
+                    .zoom(18)                   // Sets the zoom
                     .build();                   // Creates a CameraPosition from the builder
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
