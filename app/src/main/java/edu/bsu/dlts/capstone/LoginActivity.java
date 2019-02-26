@@ -166,19 +166,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             e.printStackTrace();
         }
 
-        TodoItem item = new TodoItem();
-        item.Text = "Awesome item";
-        mClient.getTable(TodoItem.class).insert(item, new TableOperationCallback<TodoItem>() {
-            public void onCompleted(TodoItem entity, Exception exception, ServiceFilterResponse response) {
-                if (exception == null) {
-                    // Insert succeeded
-                    Log.d("DBTEST", response.getContent());
-                } else {
-                    // Insert failed
-                    Log.d("DBTEST", exception.getMessage());
-                }
-            }
-        });
+        AzureServiceAdapter.Initialize(this);
+
+//        TodoItem item = new TodoItem();
+//        item.Text = "Awesome item";
+//        mClient.getTable(TodoItem.class).insert(item, new TableOperationCallback<TodoItem>() {
+//            public void onCompleted(TodoItem entity, Exception exception, ServiceFilterResponse response) {
+//                if (exception == null) {
+//                    // Insert succeeded
+//                    Log.d("DBTEST", response.getContent());
+//                } else {
+//                    // Insert failed
+//                    Log.d("DBTEST", exception.getMessage());
+//                }
+//            }
+//        });
     }
 
     private void signIn() {
