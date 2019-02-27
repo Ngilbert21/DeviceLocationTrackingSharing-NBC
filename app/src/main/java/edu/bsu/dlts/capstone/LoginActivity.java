@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-        startActivity(new Intent(LoginActivity.this, MainMenu.class));
+
 
     }
 
@@ -204,6 +204,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
+            startActivity(new Intent(LoginActivity.this, MainMenu.class));
         }
     }
 

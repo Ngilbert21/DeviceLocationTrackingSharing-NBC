@@ -22,18 +22,28 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.data.geojson.GeoJsonFeature;
+import com.google.maps.android.data.geojson.GeoJsonLayer;
+import com.google.maps.android.data.geojson.GeoJsonPoint;
+
+import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    private GeoJsonLayer layer;
 
     private Boolean mLocationPermissionGranted = false;
 
     private Location currentLocation;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +103,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        layer = new GeoJsonLayer(mMap, new JSONObject());
+
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new MyLocationListener(mMap);
+        locationListener = new MyLocationListener(layer);
 
         if (mLocationPermissionGranted && locationManager != null){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
@@ -109,9 +121,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 class MyLocationListener implements LocationListener {
     private GoogleMap googleMap;
+    public GeoJsonLayer layer;
 
-    MyLocationListener(GoogleMap googleMap) {
-        this.googleMap = googleMap;
+    MyLocationListener(GeoJsonLayer layer) {
+        this.layer = layer;
+        this.googleMap = layer.getMap();
     }
 
     @Override
@@ -121,7 +135,13 @@ class MyLocationListener implements LocationListener {
 //            txtLocation.setText(txtLocation.getText() + locationString);
 
             LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
-            googleMap.addMarker(new MarkerOptions().position(current).title("Location at " + Calendar.getInstance().getTime().toString()));
+            String timestamp = Calendar.getInstance().getTime().toString();
+            GeoJsonPoint point = new GeoJsonPoint(current);
+            HashMap<String, String> properties = new HashMap<String, String>();
+            properties.put("Timestamp", timestamp);
+            GeoJsonFeature pointFeature = new GeoJsonFeature(point, "Point", properties, null);
+            layer.addFeature(pointFeature);
+            googleMap.addMarker(new MarkerOptions().position(current).title("Location on " + timestamp));
 //            googleMap.moveCamera(CameraUpdateFactory.newLatLng(current));
 //            googleMap.animateCamera(CameraUpdateFactory.zoomIn());
             CameraPosition cameraPosition = new CameraPosition.Builder()
