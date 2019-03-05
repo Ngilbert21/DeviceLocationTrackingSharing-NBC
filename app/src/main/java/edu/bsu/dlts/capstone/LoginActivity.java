@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private static final String TAG = "LoginActivity";
 
-    String clientid = "Android client 1";
+    String clientid = "116675120255-khjkad5oj36hl80huiqfos8hbgge3vhe.apps.googleusercontent.com";
 
     /**
      * Id to identity READ_CONTACTS permission request.
