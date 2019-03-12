@@ -35,7 +35,7 @@ public class GroupActivity extends AppCompatActivity {
         addUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent7 = new Intent(GroupActivity.this, InvitationActivity.class);
+                Intent intent7 = new Intent(GroupActivity.this, NewGroupActivity.class);
                 startActivity(intent7);
             }
         });
