@@ -1,6 +1,7 @@
 package edu.bsu.dlts.capstone;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -59,6 +62,17 @@ public class NewGroupActivity extends AppCompatActivity {
         InitializeFields();
 
         RetrieveAndDisplayGroups();
+
+        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String currentGroupName = adapterView.getItemAtPosition(position).toString();
+                Intent intent9 = new Intent(NewGroupActivity.this, InvitationActivity.class);
+                intent9.putExtra("groupName",currentGroupName);
+                startActivity(intent9);
+
+            }
+        });
     }
 
     private void RetrieveAndDisplayGroups() {
@@ -110,8 +124,17 @@ public class NewGroupActivity extends AppCompatActivity {
                 RequestNewGroup();
                 break;
 
+            case R.id.action_find_friends:
+                SendUserToFindFriendsActivity();
+                break;
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void SendUserToFindFriendsActivity() {
+        Intent findfriendsIntent = new Intent(NewGroupActivity.this, FindFriendsActivity.class);
+        startActivity(findfriendsIntent);
     }
 
     private void RequestNewGroup() {

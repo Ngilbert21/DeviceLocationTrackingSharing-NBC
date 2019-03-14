@@ -5,6 +5,9 @@
         android:id="@+id/action_creategroup"
         android:title="Create Group" />
     <item
+        android:id="@+id/action_find_friends"
+        android:title="Find Friends" />
+    <item
         android:id="@+id/action_invite"
         android:title="Invite"
         />

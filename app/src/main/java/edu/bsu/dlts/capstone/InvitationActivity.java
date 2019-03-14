@@ -6,8 +6,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 public class InvitationActivity extends AppCompatActivity {
+
+    private String currentGroupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,9 @@ public class InvitationActivity extends AppCompatActivity {
 //            }
 //        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        currentGroupName = getIntent().getExtras().get("groupName").toString();
+        Toast.makeText(this,currentGroupName,Toast.LENGTH_SHORT).show();
     }
 
 }
