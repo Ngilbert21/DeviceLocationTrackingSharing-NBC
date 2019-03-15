@@ -1,5 +1,7 @@
 package edu.bsu.dlts.capstone;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.microsoft.windowsazure.mobileservices.*;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -76,6 +78,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     String clientid = "116675120255-khjkad5oj36hl80huiqfos8hbgge3vhe.apps.googleusercontent.com";
 
+    private DatabaseReference RootRef;
+
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -108,6 +112,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // ...
 // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        RootRef = FirebaseDatabase.getInstance().getReference();
+
 
 // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -204,7 +210,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
-            startActivity(new Intent(LoginActivity.this, MainMenu.class));
+
+            //startActivity(new Intent(LoginActivity.this, MainMenu.class));
         }
     }
 
@@ -230,6 +237,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String currentUSERID = mAuth.getCurrentUser().getUid();
+                            String Username = mAuth.getCurrentUser().getDisplayName();
+                            Log.d(TAG, Username);
+                            Log.d(TAG, currentUSERID);
+                            RootRef.child("Users").child(currentUSERID).child("name").setValue(Username);
+                            startActivity(new Intent(LoginActivity.this, MainMenu.class));
+
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
