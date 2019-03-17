@@ -16,29 +16,31 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
-public class FindFriendsActivity extends AppCompatActivity {
+public class GroupLobby extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private RecyclerView FindFriendsRecyclerList;
+    private RecyclerView GroupLobbyRecyclerList;
     private DatabaseReference UsersRef;
+    private String currentGroupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_find_friends);
+        setContentView(R.layout.activity_group_lobby);
 
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        currentGroupName = getIntent().getExtras().get("groupName").toString();
+
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("groupmembers");
 
 
-        FindFriendsRecyclerList = (RecyclerView)findViewById(R.id.find_friends_recycler_list);
-        FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
+        GroupLobbyRecyclerList = (RecyclerView)findViewById(R.id.group_lobby_recycler_list);
+        GroupLobbyRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
         mToolbar = (Toolbar)findViewById(R.id.find_friends_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Find Friends");
+        getSupportActionBar().setTitle("Group Lobby");
     }
 
     @Override
@@ -50,10 +52,10 @@ public class FindFriendsActivity extends AppCompatActivity {
                 .setQuery(UsersRef,Contacts.class)
                 .build();
 
-        FirebaseRecyclerAdapter<Contacts,FindFriendViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder>(options) {
+        FirebaseRecyclerAdapter<Contacts,GroupLobby.GroupLobbyViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Contacts, GroupLobby.GroupLobbyViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull FindFriendViewHolder holder, int position, @NonNull Contacts model) {
+                    protected void onBindViewHolder(@NonNull GroupLobby.GroupLobbyViewHolder holder, int position, @NonNull Contacts model) {
 
                         holder.userName.setText(model.getName());
 
@@ -68,25 +70,25 @@ public class FindFriendsActivity extends AppCompatActivity {
 
                     @NonNull
                     @Override
-                    public FindFriendViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                    public GroupLobby.GroupLobbyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
-                        FindFriendViewHolder viewHolder = new FindFriendViewHolder(view);
+                        GroupLobby.GroupLobbyViewHolder viewHolder = new GroupLobbyViewHolder(view);
                         return viewHolder;
                     }
                 };
 
-        FindFriendsRecyclerList.setAdapter(adapter);
+        GroupLobbyRecyclerList.setAdapter(adapter);
 
         adapter.startListening();
 
     }
 
-    public static class FindFriendViewHolder extends RecyclerView.ViewHolder{
+    public static class GroupLobbyViewHolder extends RecyclerView.ViewHolder{
 
         TextView userName;
 
 
-        public FindFriendViewHolder(@NonNull View itemView) {
+        public GroupLobbyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             userName = itemView.findViewById(R.id.user_profile_name);

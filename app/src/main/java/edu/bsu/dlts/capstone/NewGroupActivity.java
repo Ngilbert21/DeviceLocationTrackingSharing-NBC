@@ -67,8 +67,11 @@ public class NewGroupActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String currentGroupName = adapterView.getItemAtPosition(position).toString();
-                Intent intent9 = new Intent(NewGroupActivity.this, InvitationActivity.class);
+                Intent intent9 = new Intent(NewGroupActivity.this, GroupLobby.class);
                 intent9.putExtra("groupName",currentGroupName);
+                String currentUSERID = mAuth.getCurrentUser().getUid();
+                String Username = mAuth.getCurrentUser().getDisplayName();
+                RootRef.child("Groups").child(currentGroupName).child("groupmembers").child(currentUSERID).child("name").setValue(Username);
                 startActivity(intent9);
 
             }
