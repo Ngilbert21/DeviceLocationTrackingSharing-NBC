@@ -26,11 +26,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.microsoft.windowsazure.mobileservices.http.OkHttpClientFactory;
+import com.squareup.okhttp.OkHttpClient;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class NewGroupActivity extends AppCompatActivity {
 
@@ -50,6 +55,8 @@ public class NewGroupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
+
+        AzureServiceAdapter.Initialize(this);
 
 
         //Set toolbar and logout / Join Menu
@@ -76,6 +83,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void RetrieveAndDisplayGroups() {
@@ -194,4 +202,5 @@ public class NewGroupActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }
