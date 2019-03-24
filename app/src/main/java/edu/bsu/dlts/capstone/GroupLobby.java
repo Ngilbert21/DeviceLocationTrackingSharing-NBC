@@ -32,7 +32,6 @@ public class GroupLobby extends AppCompatActivity {
 
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("groupmembers");
 
-
         GroupLobbyRecyclerList = (RecyclerView)findViewById(R.id.group_lobby_recycler_list);
         GroupLobbyRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -78,7 +77,6 @@ public class GroupLobby extends AppCompatActivity {
                 };
 
         GroupLobbyRecyclerList.setAdapter(adapter);
-
         adapter.startListening();
 
     }

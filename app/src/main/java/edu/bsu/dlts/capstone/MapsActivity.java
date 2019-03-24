@@ -111,11 +111,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mLocationPermissionGranted && locationManager != null){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
         }
-
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
 
@@ -131,8 +126,6 @@ class MyLocationListener implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-//            String locationString = String.format("%.4f %.4f\n", location.getLatitude(), location.getLongitude());
-//            txtLocation.setText(txtLocation.getText() + locationString);
 
             LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
             String timestamp = Calendar.getInstance().getTime().toString();
@@ -142,8 +135,6 @@ class MyLocationListener implements LocationListener {
             GeoJsonFeature pointFeature = new GeoJsonFeature(point, "Point", properties, null);
             layer.addFeature(pointFeature);
             googleMap.addMarker(new MarkerOptions().position(current).title("Location on " + timestamp));
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(current));
-//            googleMap.animateCamera(CameraUpdateFactory.zoomIn());
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(current)      // Sets the center of the map to Mountain View
                     .zoom(18)                   // Sets the zoom

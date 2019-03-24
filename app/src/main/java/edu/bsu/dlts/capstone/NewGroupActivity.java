@@ -80,7 +80,6 @@ public class NewGroupActivity extends AppCompatActivity {
                 String Username = mAuth.getCurrentUser().getDisplayName();
                 RootRef.child("Groups").child(currentGroupName).child("groupmembers").child(currentUSERID).child("name").setValue(Username);
                 startActivity(intent9);
-
             }
         });
 
@@ -168,14 +167,9 @@ public class NewGroupActivity extends AppCompatActivity {
                 }else {
                     
                     CreateNewGroup(groupName);
-
                 }
-
             }
         }
-
-
-
         );
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -185,7 +179,8 @@ public class NewGroupActivity extends AppCompatActivity {
                 dialogInterface.cancel();
 
             }
-        });
+        }
+        );
         builder.show();
     }
 
@@ -198,9 +193,7 @@ public class NewGroupActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Toast.makeText(NewGroupActivity.this, groupName+" group is created Successfully....", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
     }
-
 }
