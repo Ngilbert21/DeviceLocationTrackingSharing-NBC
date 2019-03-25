@@ -26,6 +26,8 @@ import com.google.maps.android.data.geojson.GeoJsonFeature;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 import com.google.maps.android.data.geojson.GeoJsonPoint;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
@@ -35,7 +37,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    private GeoJsonLayer layer;
+    private JSONObject geojson = new JSONObject();
 
     private Boolean mLocationPermissionGranted = false;
 
@@ -54,6 +56,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        try {
+            geojson.put("type", "FeatureCollection");
+            geojson.put("features", new JSONArray());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void getLocationPermission(){
@@ -103,10 +113,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        layer = new GeoJsonLayer(mMap, new JSONObject());
-
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener(layer);
+        locationListener = new MyLocationListener(geojson, mMap);
 
         if (mLocationPermissionGranted && locationManager != null){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
@@ -116,11 +124,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 class MyLocationListener implements LocationListener {
     private GoogleMap googleMap;
-    public GeoJsonLayer layer;
+    private JSONObject geojson;
 
-    MyLocationListener(GeoJsonLayer layer) {
-        this.layer = layer;
-        this.googleMap = layer.getMap();
+    MyLocationListener(JSONObject geojson, GoogleMap googleMap) {
+        this.geojson = geojson;
+        this.googleMap = googleMap;
     }
 
     @Override
@@ -129,17 +137,31 @@ class MyLocationListener implements LocationListener {
 
             LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
             String timestamp = Calendar.getInstance().getTime().toString();
-            GeoJsonPoint point = new GeoJsonPoint(current);
-            HashMap<String, String> properties = new HashMap<String, String>();
-            properties.put("Timestamp", timestamp);
-            GeoJsonFeature pointFeature = new GeoJsonFeature(point, "Point", properties, null);
-            layer.addFeature(pointFeature);
+            try {
+                JSONArray features = geojson.getJSONArray("features");
+                JSONObject feature = new JSONObject();
+                JSONObject geometry = new JSONObject();
+                JSONObject properties = new JSONObject();
+                geometry.put("type", "Point");
+                geometry.put("coordinates", new JSONArray("[" + location.getLongitude() + ", " + location.getLatitude() + "]"));
+                feature.put("type", "Feature");
+                feature.put("geometry", geometry);
+                properties.put("Timestamp", timestamp);
+                feature.put("properties", properties);
+                features.put(feature);
+                geojson.put("features", features);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             googleMap.addMarker(new MarkerOptions().position(current).title("Location on " + timestamp));
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(current)      // Sets the center of the map to Mountain View
                     .zoom(18)                   // Sets the zoom
                     .build();                   // Creates a CameraPosition from the builder
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            BlobParams params = new BlobParams(null, geojson.toString());
+            AzureBlobAdapter blobAdapter = new AzureBlobAdapter();
+            blobAdapter.execute(params);
         }
     }
 
