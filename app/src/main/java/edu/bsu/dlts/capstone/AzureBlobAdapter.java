@@ -12,7 +12,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
 public class AzureBlobAdapter extends AsyncTask<BlobParams, Void, Void> {
     private static final String storageURL = "http://brstrayer.blob.core.windows.net";
     private static final String storageContainer = "geojson";
-    private static final String storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=brstrayer;AccountKey=ezwwhzl+ilhvuzWt18DaBv/dbCfJ4C6Ix2yo6vN1XguzfSMMD+75NHFsZ54ugDZej4aShXYPi1Kp7vAdLLRa5g==;EndpointSuffix=core.windows.net";
+    private static final String storageConnectionString = "CONNECTIONSTRING";
 
     @Override
     protected Void doInBackground(BlobParams... params) {
