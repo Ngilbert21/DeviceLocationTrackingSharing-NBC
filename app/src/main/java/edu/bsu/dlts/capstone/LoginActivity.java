@@ -24,15 +24,10 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -172,19 +167,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             e.printStackTrace();
         }
 
-        TodoItem item = new TodoItem();
-        item.Text = "Awesome item";
-        mClient.getTable(TodoItem.class).insert(item, new TableOperationCallback<TodoItem>() {
-            public void onCompleted(TodoItem entity, Exception exception, ServiceFilterResponse response) {
-                if (exception == null) {
-                    // Insert succeeded
-                    Log.d("DBTEST", response.getContent());
-                } else {
-                    // Insert failed
-                    Log.d("DBTEST", exception.getMessage());
-                }
-            }
-        });
+//        TodoItem item = new TodoItem();
+//        item.Text = "Awesome item";
+//        mClient.getTable(TodoItem.class).insert(item, new TableOperationCallback<TodoItem>() {
+//            public void onCompleted(TodoItem entity, Exception exception, ServiceFilterResponse response) {
+//                if (exception == null) {
+//                    // Insert succeeded
+//                    Log.d("DBTEST", response.getContent());
+//                } else {
+//                    // Insert failed
+//                    Log.d("DBTEST", exception.getMessage());
+//                }
+//            }
+//        });
     }
 
     private void signIn() {
