@@ -11,13 +11,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.ListBlobItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PreviousTours extends AppCompatActivity implements AsyncResponse{
 
-    private ListBlobItem activeBlob;
+    private CloudBlockBlob activeBlob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,7 @@ public class PreviousTours extends AppCompatActivity implements AsyncResponse{
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        configureMapButton();
         AzureBlobRetriever blobRetriever = new AzureBlobRetriever();
         blobRetriever.delegate = this;
         blobRetriever.execute();
@@ -37,11 +41,13 @@ public class PreviousTours extends AppCompatActivity implements AsyncResponse{
         TextView tourTitle = findViewById(R.id.editText15);
 
         for (ListBlobItem blob : output){
-            activeBlob = blob;
-            String path = blob.getUri().getPath();
-            String name = path.substring(path.lastIndexOf('/') + 1);
-            Log.d("BLOBTEST", name);
-            tourTitle.setText(name);
+            if (blob.getClass() == CloudBlockBlob.class){
+                activeBlob = (CloudBlockBlob) blob;
+                String path = blob.getUri().getPath();
+                String name = path.substring(path.lastIndexOf('/') + 1);
+                Log.d("BLOBTEST", name);
+                tourTitle.setText(name);
+            }
         }
     }
 
@@ -51,6 +57,13 @@ public class PreviousTours extends AppCompatActivity implements AsyncResponse{
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(PreviousTours.this, MapsActivity.class);
+//                try {
+//                    intent2.putExtra("geojson", activeBlob.downloadText());
+//                } catch (StorageException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 startActivity(intent2);
             }
         });

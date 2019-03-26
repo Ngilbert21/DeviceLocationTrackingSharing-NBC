@@ -40,7 +40,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    private JSONObject geojson = new JSONObject();
+    private JSONObject geojson;
+    private boolean isPrevious;
 
     private Boolean mLocationPermissionGranted = false;
 
@@ -60,15 +61,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        configureFinishButton();
+        String geojsonStr = getIntent().getStringExtra("geojson");
 
-        try {
-            geojson.put("type", "FeatureCollection");
-            geojson.put("features", new JSONArray());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (geojsonStr != null){
+            try {
+                geojson = new JSONObject(geojsonStr);
+                GeoJsonLayer layer = new GeoJsonLayer(mMap, geojson);
+                layer.addLayerToMap();
+                isPrevious = true;
+                Log.d("MapStat", "isPrevious");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else  {
+            geojson = new JSONObject();
+            isPrevious = false;
+
+            try {
+                geojson.put("type", "FeatureCollection");
+                geojson.put("features", new JSONArray());
+                Log.d("MapStat", "isCurrent");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
+        configureFinishButton();
     }
 
     private void getLocationPermission(){
