@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class AzureBlobRetriever extends AsyncTask<Void, Void, ArrayList<ListBlobItem>> {
     private static final String storageURL = "http://brstrayer.blob.core.windows.net";
     private static final String storageContainer = "geojson";
-    private static final String storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=brstrayer;AccountKey=97TlJ0EDEj1n+ZIRRrjFns3neo55o2q+XT7ArUNpMa5Al+jvZ7jVosOsLWuUp/2V84WmyyeK7CxC/Kjr3MEGeA==;EndpointSuffix=core.windows.net";
+    private static final String storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=brstrayer;AccountKey=b57DxanD93qpzmSLYdpAJupjLfQUiDlnSvdSbcnExiXZWLwH4CHAG4F60pnbrNwBNQyDLTUswgZ16w//B6FS0g==;EndpointSuffix=core.windows.net";
     public AsyncResponse delegate = null;
 
     @Override
