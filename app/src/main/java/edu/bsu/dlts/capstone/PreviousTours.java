@@ -31,6 +31,7 @@ public class PreviousTours extends AppCompatActivity implements AsyncResponse{
         blobRetriever.execute();
     }
 
+    // Soon to be changed for the new formatting and matching with the recycler view
     @Override
     public void processFinish(ArrayList<ListBlobItem> output) {
         TextView tourTitle = findViewById(R.id.editText15);

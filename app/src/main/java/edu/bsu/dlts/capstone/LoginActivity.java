@@ -126,32 +126,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        ;
-
-//        // Set up the login form.
-//        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-//        populateAutoComplete();
-//
-//        mPasswordView = (EditText) findViewById(R.id.password);
-//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//
-//        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-//        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                attemptLogin();
-//            }
-//        });
-
         mGoogleBtn = (SignInButton)findViewById(R.id.googleBtn);
         mGoogleBtn.setOnClickListener(this);
 
@@ -244,8 +218,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
-
-                        // ...
                     }
                 });
     }
