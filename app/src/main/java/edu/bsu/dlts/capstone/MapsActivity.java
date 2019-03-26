@@ -3,6 +3,7 @@ package edu.bsu.dlts.capstone;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,6 +14,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,6 +60,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        configureFinishButton();
+
         try {
             geojson.put("type", "FeatureCollection");
             geojson.put("features", new JSONArray());
@@ -76,6 +81,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }else {
             ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
+    }
+
+    private void configureFinishButton(){
+        Button endTour = (Button) findViewById(R.id.button1);
+        endTour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(MapsActivity.this, MainMenu.class);
+                startActivity(intent2);
+            }
+        });
     }
 
     @Override
