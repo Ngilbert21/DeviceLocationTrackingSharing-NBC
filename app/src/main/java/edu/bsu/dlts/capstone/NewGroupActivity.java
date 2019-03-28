@@ -143,7 +143,7 @@ public class NewGroupActivity extends AppCompatActivity {
     }
 
     private void SendUserToFindFriendsActivity() {
-        Intent findfriendsIntent = new Intent(NewGroupActivity.this, FindFriendsActivity.class);
+        Intent findfriendsIntent = new Intent(NewGroupActivity.this, UsersActivity.class);
         startActivity(findfriendsIntent);
     }
 

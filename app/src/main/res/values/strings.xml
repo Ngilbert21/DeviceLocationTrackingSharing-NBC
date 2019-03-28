@@ -18,4 +18,10 @@
     <string name="title_activity_tour">Tour Activity</string>
     <string name="title_activity_group">Groups</string>
     <string name="title_activity_invitation">Invitations</string>
+
+    <string name="add_textbox_hint">Add a ToDo item</string>
+    <string name="add_button_text">Add</string>
+    <string name="service_title">All Users </string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="checkbox_text">Item Text</string>
 </resources>

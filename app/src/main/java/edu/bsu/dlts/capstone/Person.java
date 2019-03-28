@@ -1,12 +1,28 @@
 package edu.bsu.dlts.capstone;
 
+import com.microsoft.windowsazure.mobileservices.table.DateTimeOffset;
+
 public class Person {
+    @com.google.gson.annotations.SerializedName("id")
+    private String mId;
+
+    @com.google.gson.annotations.SerializedName("PersonID")
     private int PersonID;
+
+    @com.google.gson.annotations.SerializedName("FirstName")
     private String FirstName;
+
+    @com.google.gson.annotations.SerializedName("LastName")
     private String LastName;
+
+    @com.google.gson.annotations.SerializedName("EmailAddress")
     private String EmailAddress;
-    private String CreatedDateTime;
-    private String DeletedDateTime;
+
+    @com.google.gson.annotations.SerializedName("CreatedDateTime")
+    private DateTimeOffset CreatedDateTime;
+
+    @com.google.gson.annotations.SerializedName("DeletedDateTime")
+    private DateTimeOffset DeletedDateTime;
 
 
     public int getPersonID() {
@@ -41,19 +57,31 @@ public class Person {
         EmailAddress = emailAddress;
     }
 
-    public String getCreatedDateTime() {
+    public DateTimeOffset getCreatedDateTime() {
         return CreatedDateTime;
     }
 
-    public void setCreatedDateTime(String createdDateTime) {
+    public void setCreatedDateTime(DateTimeOffset createdDateTime) {
         CreatedDateTime = createdDateTime;
     }
 
-    public String getDeletedDateTime() {
+    public DateTimeOffset getDeletedDateTime() {
         return DeletedDateTime;
     }
 
-    public void setDeletedDateTime(String deletedDateTime) {
+    public void setDeletedDateTime(DateTimeOffset deletedDateTime) {
         DeletedDateTime = deletedDateTime;
     }
+
+    public Person(String firstName){
+        this.setFirstName(firstName);
+
+    }
+
+
+    @Override
+    public String toString() {
+        return getEmailAddress();
+    }
+
 }
