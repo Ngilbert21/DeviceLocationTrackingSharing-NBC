@@ -1,42 +1,34 @@
 package edu.bsu.dlts.capstone;
 
 public class TripToPerson {
-    private int TripToPersonID;
-    private int PersonID;
-    private int TripID;
-    private String CreatedDateTime;
+    private String id;
+    private String PersonID;
+    private String TripID;
+    private String createdAt;
     private String DeletedDateTime;
 
-    public int getTripToPersonID() {
-        return TripToPersonID;
+    public String getId() {
+        return id;
     }
 
-    public void setTripToPersonID(int tripToPersonID) {
-        TripToPersonID = tripToPersonID;
-    }
-
-    public int getPersonID() {
+    public String getPersonID() {
         return PersonID;
     }
 
-    public void setPersonID(int personID) {
+    public void setPersonID(String personID) {
         PersonID = personID;
     }
 
-    public int getTripID() {
+    public String getTripID() {
         return TripID;
     }
 
-    public void setTripID(int tripID) {
+    public void setTripID(String tripID) {
         TripID = tripID;
     }
 
-    public String getCreatedDateTime() {
-        return CreatedDateTime;
-    }
-
-    public void setCreatedDateTime(String createdDateTime) {
-        CreatedDateTime = createdDateTime;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public String getDeletedDateTime() {

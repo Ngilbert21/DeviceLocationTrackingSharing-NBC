@@ -1,9 +1,6 @@
 package edu.bsu.dlts.capstone;
 
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Collection;
 
 import static org.junit.Assert.*;
 
@@ -40,9 +37,9 @@ public class PersonTest {
 
     @Test
     public void testCreatedDateTime() {
-        p1.setCreatedDateTime("12-21-96");
-        assertNotNull(p1.getCreatedDateTime());
-        assertEquals("12-21-96", p1.getCreatedDateTime());
+        p1.setCreatedAt("12-21-96");
+        assertNotNull(p1.getCreatedAt());
+        assertEquals("12-21-96", p1.getCreatedAt());
     }
 
     @Test

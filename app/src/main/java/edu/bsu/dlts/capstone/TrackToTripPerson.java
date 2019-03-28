@@ -1,42 +1,34 @@
 package edu.bsu.dlts.capstone;
 
 public class TrackToTripPerson {
-    private int TrackToTripPerson;
-    private int TripToPersonID;
-    private int TrackID;
-    private String CreatedDateTime;
+    private String id;
+    private String TripToPersonID;
+    private String TrackID;
+    private String createdAt;
     private String DeletedDateTime;
 
-    public int getTrackToTripPerson() {
-        return TrackToTripPerson;
+    public String getId() {
+        return id;
     }
 
-    public void setTrackToTripPerson(int trackToTripPerson) {
-        TrackToTripPerson = trackToTripPerson;
-    }
-
-    public int getTripToPersonID() {
+    public String getTripToPersonID() {
         return TripToPersonID;
     }
 
-    public void setTripToPersonID(int tripToPersonID) {
+    public void setTripToPersonID(String tripToPersonID) {
         TripToPersonID = tripToPersonID;
     }
 
-    public int getTrackID() {
+    public String getTrackID() {
         return TrackID;
     }
 
-    public void setTrackID(int trackID) {
+    public void setTrackID(String trackID) {
         TrackID = trackID;
     }
 
-    public String getCreatedDateTime() {
-        return CreatedDateTime;
-    }
-
-    public void setCreatedDateTime(String createdDateTime) {
-        CreatedDateTime = createdDateTime;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public String getDeletedDateTime() {

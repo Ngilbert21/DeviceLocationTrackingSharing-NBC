@@ -10,9 +10,9 @@ public class TripToPersonTest {
 
     @Test
     public void testTripToPersonID() {
-        TTP1.setTripToPersonID(15);
-        assertNotNull(TTP1.getTripToPersonID());
-        assertEquals(15, TTP1.getTripToPersonID());
+        TTP1.setId(15);
+        assertNotNull(TTP1.getId());
+        assertEquals(15, TTP1.getId());
 
     }
 
@@ -32,9 +32,9 @@ public class TripToPersonTest {
 
     @Test
     public void testCreatedDateTime() {
-        TTP1.setCreatedDateTime("04-15-2017");
-        assertNotNull(TTP1.getCreatedDateTime());
-        assertEquals("04-15-2017", TTP1.getCreatedDateTime());
+        TTP1.setCreatedAt("04-15-2017");
+        assertNotNull(TTP1.getCreatedAt());
+        assertEquals("04-15-2017", TTP1.getCreatedAt());
     }
 
     @Test
