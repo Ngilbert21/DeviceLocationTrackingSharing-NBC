@@ -9,9 +9,9 @@ public class TrackToTripPersonTest {
 
     @Test
     public void getTrackToTripPerson() {
-        TTTP1.setTrackToTripPerson(20);
-        assertNotNull(TTTP1.getTrackToTripPerson());
-        assertEquals(20, TTTP1.getTrackToTripPerson());
+        TTTP1.setId(20);
+        assertNotNull(TTTP1.getId());
+        assertEquals(20, TTTP1.getId());
     }
 
     @Test
@@ -30,9 +30,9 @@ public class TrackToTripPersonTest {
 
     @Test
     public void getCreatedDateTime() {
-        TTTP1.setCreatedDateTime("07-20-2019");
-        assertNotNull(TTTP1.getCreatedDateTime());
-        assertEquals("07-20-2019",TTTP1.getCreatedDateTime());
+        TTTP1.setCreatedAt("07-20-2019");
+        assertNotNull(TTTP1.getCreatedAt());
+        assertEquals("07-20-2019",TTTP1.getCreatedAt());
     }
 
     @Test

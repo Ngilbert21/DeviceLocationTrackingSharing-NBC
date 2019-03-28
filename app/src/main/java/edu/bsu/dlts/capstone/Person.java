@@ -1,20 +1,16 @@
 package edu.bsu.dlts.capstone;
 
 public class Person {
-    private int PersonID;
+    private String id;
     private String FirstName;
     private String LastName;
     private String EmailAddress;
-    private String CreatedDateTime;
+    private String createdAt;
     private String DeletedDateTime;
 
 
-    public int getPersonID() {
-        return PersonID;
-    }
-
-    public void setPersonID(int personID) {
-        PersonID = personID;
+    public String getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -41,12 +37,8 @@ public class Person {
         EmailAddress = emailAddress;
     }
 
-    public String getCreatedDateTime() {
-        return CreatedDateTime;
-    }
-
-    public void setCreatedDateTime(String createdDateTime) {
-        CreatedDateTime = createdDateTime;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public String getDeletedDateTime() {

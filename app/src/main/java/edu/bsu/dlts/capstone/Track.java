@@ -1,19 +1,15 @@
 package edu.bsu.dlts.capstone;
 
 public class Track {
-    private int TrackID;
+    private String id;
     private String PathName;
     private String StartTime;
     private String EndTime;
-    private String CreatedDateTime;
+    private String createdAt;
     private String DeletedDateTime;
 
-    public int getTrackID() {
-        return TrackID;
-    }
-
-    public void setTrackID(int trackID) {
-        TrackID = trackID;
+    public String getId() {
+        return id;
     }
 
     public String getPathName() {
@@ -40,12 +36,8 @@ public class Track {
         EndTime = endTime;
     }
 
-    public String getCreatedDateTime() {
-        return CreatedDateTime;
-    }
-
-    public void setCreatedDateTime(String createdDateTime) {
-        CreatedDateTime = createdDateTime;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public String getDeletedDateTime() {

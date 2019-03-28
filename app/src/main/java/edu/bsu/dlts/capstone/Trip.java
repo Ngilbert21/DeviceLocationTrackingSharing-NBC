@@ -1,21 +1,17 @@
 package edu.bsu.dlts.capstone;
 
 public class Trip {
-    private int TripID;
+    private String id;
     private String TripName;
     private String StartDate;
     private String EndDate;
     private boolean TripIsPublic;
-    private int OwnerPersonID;
-    private String CreatedDateTime;
+    private String OwnerPersonID;
+    private String createdAt;
     private String DeletedDateTime;
 
-    public int getTripID() {
-        return TripID;
-    }
-
-    public void setTripID(int tripID) {
-        TripID = tripID;
+    public String getId() {
+        return id;
     }
 
     public String getTripName() {
@@ -50,20 +46,16 @@ public class Trip {
         TripIsPublic = tripIsPublic;
     }
 
-    public int getOwnerPersonID() {
+    public String getOwnerPersonID() {
         return OwnerPersonID;
     }
 
-    public void setOwnerPersonID(int ownerPersonID) {
+    public void setOwnerPersonID(String ownerPersonID) {
         OwnerPersonID = ownerPersonID;
     }
 
-    public String getCreatedDateTime() {
-        return CreatedDateTime;
-    }
-
-    public void setCreatedDateTime(String createdDateTime) {
-        CreatedDateTime = createdDateTime;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public String getDeletedDateTime() {
