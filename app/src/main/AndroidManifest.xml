@@ -22,7 +22,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BrandNewGroupActivity"></activity>
+        <activity android:name=".TripsActivity"></activity>
+        <activity android:name=".NewGroupLobby" />
+        <activity android:name=".BrandNewGroupActivity" />
         <activity android:name=".UsersActivity" />
         <activity android:name=".GroupLobby" />
         <activity

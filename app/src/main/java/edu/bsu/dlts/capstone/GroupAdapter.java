@@ -54,7 +54,8 @@ public class GroupAdapter extends ArrayAdapter<Group> {
                     checkBox.setEnabled(false);
                     if (mContext instanceof BrandNewGroupActivity) {
                         BrandNewGroupActivity activity = (BrandNewGroupActivity) mContext;
-                        activity.checkItem(currentItem);
+                        String groupName = checkBox.getText().toString();
+                        activity.changePage(groupName);
                     }
                 }
             }

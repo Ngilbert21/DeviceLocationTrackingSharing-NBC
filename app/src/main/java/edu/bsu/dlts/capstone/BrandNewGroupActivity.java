@@ -1,6 +1,7 @@
 package edu.bsu.dlts.capstone;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +68,8 @@ public class BrandNewGroupActivity extends AppCompatActivity {
      * Progress spinner to use for table operations
      */
     private ProgressBar mProgressBar;
+
+    private String currentgroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -464,5 +467,16 @@ public class BrandNewGroupActivity extends AppCompatActivity {
 
             return resultFuture;
         }
+    }
+
+    public void changePage( String groupName ){
+        currentgroup = groupName;
+
+        Intent intent = new Intent(BrandNewGroupActivity.this, UsersActivity.class);
+
+        intent.putExtra("groupName",currentgroup);
+
+        startActivity(intent);
+
     }
 }

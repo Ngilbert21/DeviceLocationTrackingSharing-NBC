@@ -2,6 +2,7 @@ package edu.bsu.dlts.capstone;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -77,6 +79,8 @@ public class UsersActivity extends AppCompatActivity {
      * Initializes the activity
      */
 
+    private String currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +90,8 @@ public class UsersActivity extends AppCompatActivity {
 
         // Initialize the progress bar
         mProgressBar.setVisibility(ProgressBar.GONE);
+
+        configureTripsButton();
 
         try {
             // Create the client instance, using the provided mobile app URL.
@@ -493,6 +499,19 @@ public class UsersActivity extends AppCompatActivity {
 
             return resultFuture;
         }
+    }
+
+    public void configureTripsButton(){
+        Button TripScreen = (Button)findViewById(R.id.Tripbutton);
+        TripScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent TripIntent = new Intent(UsersActivity.this,TripsActivity.class);
+                currentUser = getIntent().getExtras().get("groupName").toString();
+                startActivity(TripIntent);
+            }
+        });
+
     }
 
 }
