@@ -2,6 +2,8 @@ package edu.bsu.dlts.capstone;
 
 import org.junit.Test;
 
+import edu.bsu.dlts.capstone.models.TripToPerson;
+
 import static org.junit.Assert.*;
 
 public class TripToPersonTest {
