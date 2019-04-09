@@ -90,7 +90,7 @@
             android:value="AIzaSyBK_kQaNGb4WBO2rK0eINvH52bZtWlitP8" />
 
         <activity
-            android:name=".activities.MapsActivity"
+            android:name=".activities.PreviousMapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".activities.LoginActivity"
