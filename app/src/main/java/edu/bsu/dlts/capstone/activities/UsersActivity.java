@@ -2,6 +2,7 @@ package edu.bsu.dlts.capstone.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -31,15 +32,20 @@ import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.SimpleSy
 import com.squareup.okhttp.OkHttpClient;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import edu.bsu.dlts.capstone.adapters.AzureServiceAdapter;
+import edu.bsu.dlts.capstone.models.Group;
 import edu.bsu.dlts.capstone.models.Person;
 import edu.bsu.dlts.capstone.adapters.PersonAdapter;
 import edu.bsu.dlts.capstone.R;
+import edu.bsu.dlts.capstone.models.Trip;
+import edu.bsu.dlts.capstone.models.UserGroup;
 
 import static com.microsoft.windowsazure.mobileservices.table.query.QueryOperations.val;
 
@@ -177,9 +183,24 @@ public class UsersActivity extends AppCompatActivity {
                 try {
 
                     checkItemInTable(item);
+                    String groupName = getIntent().getStringExtra("groupName");
+                    Group group = new Group();
+                    try {
+                        group = AzureServiceAdapter.getInstance().getClient().getTable(Group.class).where().field("Name").eq(groupName).execute().get().get(0);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    UserGroup userGroup = new UserGroup();
+                    userGroup.setUserID(item.getMId());
+                    userGroup.setGroupID(group.getId());
+                    userGroup.setActive(true);
+                    AzureServiceAdapter.getInstance().getClient().getTable(UserGroup.class).insert(userGroup);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             //if (item.isComplete()) {
                                 mAdapter.remove(item);
                             //}
@@ -307,10 +328,25 @@ public class UsersActivity extends AppCompatActivity {
      */
 
     private List<Person> refreshItemsFromMobileServiceTable() throws ExecutionException, InterruptedException {
-        return mPersonTable.where()
-                //.field("complete").
-                //eq(val(false))
+        MobileServiceClient client = AzureServiceAdapter.getInstance().getClient();
+        Group group = client.getTable(Group.class).where().field("Name").eq(getIntent().getStringExtra("groupName")).execute().get().get(0);
+        String groupId = group.getId();
+        List<UserGroup> userGroups = client.getTable(UserGroup.class).where().field("GroupID").eq(groupId).execute().get();
+        List<String> userIds = new ArrayList<>();
+        for (UserGroup userGroup :
+                userGroups) {
+            userIds.add(userGroup.getUserID());
+        }
+        List<Person> users = mPersonTable.where()
                 .execute().get();
+        List<Person> results = new ArrayList<>();
+        for (Person user :
+                users) {
+            if (!userIds.contains(user.getMId())){
+                results.add(user);
+            }
+        }
+        return results;
     }
 
     //Offline Sync
@@ -507,7 +543,8 @@ public class UsersActivity extends AppCompatActivity {
         TripScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent TripIntent = new Intent(UsersActivity.this, TripsActivity.class);
+                Intent TripIntent = new Intent(UsersActivity.this, GroupActivity.class);
+                TripIntent.putExtra("groupName", getIntent().getStringExtra("groupName"));
                 currentUser = getIntent().getExtras().get("groupName").toString();
                 startActivity(TripIntent);
             }

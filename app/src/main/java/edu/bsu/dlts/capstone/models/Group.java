@@ -29,9 +29,4 @@ public class Group {
     public void setActive(boolean active) {
         IsActive = active;
     }
-
-    public Group(String Name){
-        this.setName(Name);
-
-    }
 }

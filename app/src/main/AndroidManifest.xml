@@ -27,7 +27,7 @@
         <activity android:name=".activities.NewGroupLobby" />
         <activity android:name=".activities.BrandNewGroupActivity" />
         <activity android:name=".activities.UsersActivity" />
-        <activity android:name=".activities.GroupLobby" />
+        <activity android:name=".activities.GroupLobbyActivity" />
         <activity
             android:name=".activities.FindFriendsActivity"
             android:parentActivityName=".activities.NewGroupActivity" />
@@ -53,23 +53,23 @@
         <activity
             android:name=".activities.TourActivity"
             android:label="@string/title_activity_tour"
-            android:parentActivityName=".activities.MainMenu"
+            android:parentActivityName=".activities.MainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.bsu.dlts.capstone.activities.MainMenu" />
+                android:value="edu.bsu.dlts.capstone.activities.MainMenuActivity" />
         </activity>
         <activity
-            android:name=".activities.PreviousTours"
+            android:name=".activities.PreviousToursActivity"
             android:label="@string/title_activity_previous_tours"
-            android:parentActivityName=".activities.MainMenu"
+            android:parentActivityName=".activities.MainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.bsu.dlts.capstone.activities.MainMenu" />
+                android:value="edu.bsu.dlts.capstone.activities.MainMenuActivity" />
         </activity>
         <activity
-            android:name=".activities.MainMenu"
+            android:name=".activities.MainMenuActivity"
             android:label="@string/title_activity_main_menu"
             android:parentActivityName=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -101,6 +101,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.UserActivity" />
+        <activity android:name=".activities.UpdateUserActivity" />
     </application>
 
 </manifest>

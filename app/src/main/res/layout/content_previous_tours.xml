@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.PreviousTours"
+    tools:context=".activities.PreviousToursActivity"
     tools:showIn="@layout/activity_previous_tours">
 
     <RelativeLayout
@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button8"
+            android:id="@+id/endTour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -25,10 +25,10 @@
             android:text="View" />
 
         <TextView
-            android:id="@+id/editText15"
+            android:id="@+id/tourTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/button8"
+            android:layout_alignTop="@+id/endTour"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:ems="10"

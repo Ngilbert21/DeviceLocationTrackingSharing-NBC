@@ -2,6 +2,7 @@ package edu.bsu.dlts.capstone.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.SimpleSy
 import com.squareup.okhttp.OkHttpClient;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,9 @@ import edu.bsu.dlts.capstone.adapters.AzureServiceAdapter;
 import edu.bsu.dlts.capstone.models.Group;
 import edu.bsu.dlts.capstone.adapters.GroupAdapter;
 import edu.bsu.dlts.capstone.R;
+import edu.bsu.dlts.capstone.models.UserGroup;
 
+// TODO: This class is overengineered. Consider remaking with necessary components
 // TODO: Rename with more relevant name
 public class BrandNewGroupActivity extends AppCompatActivity {
 
@@ -193,12 +197,14 @@ public class BrandNewGroupActivity extends AppCompatActivity {
         }
 
         // Create a new item
-        final Group item = new Group(mTextNewToDo.getText().toString());
+        final Group item = new Group();
+        item.setName(mTextNewToDo.getText().toString());
 
         item.setName(mTextNewToDo.getText().toString());
         //item.setComplete(false);
 
         // Insert the new item
+        // TODO: Move to separate class
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... params) {
@@ -209,6 +215,13 @@ public class BrandNewGroupActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             //if(!entity.isComplete()){
+                            SharedPreferences pref = getSharedPreferences("user", 0);
+                            String id = pref.getString("id", "");
+                            UserGroup userGroup = new UserGroup();
+                            userGroup.setUserID(id);
+                            userGroup.setGroupID(entity.getId());
+                            userGroup.setActive(true);
+                            AzureServiceAdapter.getInstance().getClient().getTable(UserGroup.class).insert(userGroup);
                             mAdapter.add(entity);
                             //}
                         }
@@ -222,6 +235,8 @@ public class BrandNewGroupActivity extends AppCompatActivity {
 
         runAsyncTask(task);
 
+
+
         mTextNewToDo.setText("");
     }
 
@@ -232,8 +247,7 @@ public class BrandNewGroupActivity extends AppCompatActivity {
      *            The item to Add
      */
     public Group addItemInTable(Group item) throws ExecutionException, InterruptedException {
-        Group entity = mGroupTable.insert(item).get();
-        return entity;
+        return mGroupTable.insert(item).get();
     }
 
     /**
@@ -244,6 +258,7 @@ public class BrandNewGroupActivity extends AppCompatActivity {
         // Get the items that weren't marked as completed and add them in the
         // adapter
 
+        //TODO: Move to new class
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... params) {
@@ -279,11 +294,16 @@ public class BrandNewGroupActivity extends AppCompatActivity {
      * Refresh the list with the items in the Mobile Service Table
      */
 
+    // TODO: Does this actually work? I might need to use this
     private List<Group> refreshItemsFromMobileServiceTable() throws ExecutionException, InterruptedException {
-        return mGroupTable.where()
-                //.field("complete").
-                //eq(val(false))
-                .execute().get();
+        List<Group> groups = new ArrayList<>();
+        SharedPreferences pref = getSharedPreferences("user", 0);
+        String id = pref.getString("id", "");
+        List<UserGroup> usersGroups = AzureServiceAdapter.getInstance().getClient().getTable(UserGroup.class).where().field("UserID").eq(id).execute().get();
+        for (UserGroup group: usersGroups) {
+            groups.add(AzureServiceAdapter.getInstance().getClient().getTable(Group.class).lookUp(group.getGroupID()).get());
+        }
+        return groups;
     }
 
     //Offline Sync
@@ -305,6 +325,7 @@ public class BrandNewGroupActivity extends AppCompatActivity {
      * @throws ExecutionException
      * @throws InterruptedException
      */
+    // TODO: This is crazy
     private AsyncTask<Void, Void, Void> initLocalStore() throws MobileServiceLocalStoreException, ExecutionException, InterruptedException {
 
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
@@ -478,7 +499,7 @@ public class BrandNewGroupActivity extends AppCompatActivity {
     public void changePage( String groupName ){
         String currentgroup = groupName;
 
-        Intent intent = new Intent(BrandNewGroupActivity.this, UsersActivity.class);
+        Intent intent = new Intent(BrandNewGroupActivity.this, GroupActivity.class);
 
         intent.putExtra("groupName", currentgroup);
 

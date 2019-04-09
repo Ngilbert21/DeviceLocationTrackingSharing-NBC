@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import edu.bsu.dlts.capstone.R;
 
-public class MainMenu extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -28,44 +28,57 @@ public class MainMenu extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         configureTourButton();
         configureBrowseToursButton();
+        configureSettingsButton();
         configureLogOutButton();
     }
 
     private void configureTourButton(){
-        Button startTour = (Button) findViewById(R.id.button4);
+        Button startTour = findViewById(R.id.startTour);
         startTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(MainMenu.this, TourActivity.class);
-                startActivity(intent2);
+                Intent toTour = new Intent(MainMenuActivity.this, TourActivity.class);
+                startActivity(toTour);
             }
         });
     }
 
     private void configureBrowseToursButton(){
-        Button prevTour = (Button) findViewById(R.id.button5);
+        Button prevTour = findViewById(R.id.prevTour);
         prevTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent3 = new Intent(MainMenu.this, PreviousTours.class);
-                startActivity(intent3);
+                Intent toPrevTours = new Intent(MainMenuActivity.this, PreviousToursActivity.class);
+                startActivity(toPrevTours);
+            }
+        });
+    }
+
+    private void configureSettingsButton() {
+        Button settings = findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toSettings = new Intent(MainMenuActivity.this, UpdateUserActivity.class);
+                startActivity(toSettings);
             }
         });
     }
 
     private void configureLogOutButton(){
-        Button LogOut = (Button) findViewById(R.id.button7);
-        LogOut.setOnClickListener(new View.OnClickListener() {
+        Button logOut = findViewById(R.id.logOut);
+        logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOut();
                 FirebaseAuth.getInstance().signOut();
-                Intent intent11 = new Intent(MainMenu.this, LoginActivity.class);
-                startActivity(intent11);
+                Intent toLogOut = new Intent(MainMenuActivity.this, LoginActivity.class);
+                startActivity(toLogOut);
             }
         });
     }
 
+    //TODO: Get sign-out working
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {

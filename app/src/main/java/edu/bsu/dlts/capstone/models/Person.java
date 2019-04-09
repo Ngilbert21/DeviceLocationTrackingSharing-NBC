@@ -1,13 +1,8 @@
 package edu.bsu.dlts.capstone.models;
 
-import com.microsoft.windowsazure.mobileservices.table.DateTimeOffset;
-
 public class Person {
     @com.google.gson.annotations.SerializedName("id")
     private String mId;
-
-    @com.google.gson.annotations.SerializedName("PersonID")
-    private int PersonID;
 
     @com.google.gson.annotations.SerializedName("FirstName")
     private String FirstName;
@@ -18,20 +13,13 @@ public class Person {
     @com.google.gson.annotations.SerializedName("EmailAddress")
     private String EmailAddress;
 
-    @com.google.gson.annotations.SerializedName("CreatedDateTime")
-    private DateTimeOffset CreatedDateTime;
+    @com.google.gson.annotations.SerializedName("createdAt")
+    private String CreatedDateTime;
 
     @com.google.gson.annotations.SerializedName("DeletedDateTime")
-    private DateTimeOffset DeletedDateTime;
+    private String DeletedDateTime;
 
-
-    public int getPersonID() {
-        return PersonID;
-    }
-
-    public void setPersonID(int personID) {
-        PersonID = personID;
-    }
+    public String getMId() {return mId;}
 
     public String getFirstName() {
         return FirstName;
@@ -57,26 +45,20 @@ public class Person {
         EmailAddress = emailAddress;
     }
 
-    public DateTimeOffset getCreatedDateTime() {
+    public String getCreatedDateTime() {
         return CreatedDateTime;
     }
 
-    public void setCreatedDateTime(DateTimeOffset createdDateTime) {
+    public void setCreatedDateTime(String createdDateTime) {
         CreatedDateTime = createdDateTime;
     }
 
-    public DateTimeOffset getDeletedDateTime() {
+    public String getDeletedDateTime() {
         return DeletedDateTime;
     }
 
-    public void setDeletedDateTime(DateTimeOffset deletedDateTime) {
+    public void setDeletedDateTime(String deletedDateTime) {
         DeletedDateTime = deletedDateTime;
-    }
-
-
-    @Override
-    public String toString() {
-        return getEmailAddress();
     }
 
 }

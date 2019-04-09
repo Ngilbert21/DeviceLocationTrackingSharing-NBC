@@ -15,7 +15,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button14"
+            android:id="@+id/findGroups"
             android:layout_marginTop="462dp"
             android:text="Find Group"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
             />
 
         <Button
-            android:id="@+id/button10"
+            android:id="@+id/tour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="280dp"
@@ -66,14 +66,12 @@
                 >
 
                 <TextView
+                    android:id="@+id/user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText2"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="User 1"
                     android:importantForAutofill="no"
-                    />
+                    android:inputType="textPersonName" />
 
             </LinearLayout>
         </ScrollView>

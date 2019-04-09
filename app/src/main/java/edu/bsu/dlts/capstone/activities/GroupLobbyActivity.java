@@ -19,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import edu.bsu.dlts.capstone.models.Contacts;
 import edu.bsu.dlts.capstone.R;
 
-public class GroupLobby extends AppCompatActivity {
+public class GroupLobbyActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private RecyclerView GroupLobbyRecyclerList;
@@ -54,10 +54,10 @@ public class GroupLobby extends AppCompatActivity {
                 .setQuery(UsersRef,Contacts.class)
                 .build();
 
-        FirebaseRecyclerAdapter<Contacts,GroupLobby.GroupLobbyViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Contacts, GroupLobby.GroupLobbyViewHolder>(options) {
+        FirebaseRecyclerAdapter<Contacts, GroupLobbyActivity.GroupLobbyViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Contacts, GroupLobbyActivity.GroupLobbyViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull GroupLobby.GroupLobbyViewHolder holder, int position, @NonNull Contacts model) {
+                    protected void onBindViewHolder(@NonNull GroupLobbyActivity.GroupLobbyViewHolder holder, int position, @NonNull Contacts model) {
 
                         holder.userName.setText(model.getName());
 
@@ -72,9 +72,9 @@ public class GroupLobby extends AppCompatActivity {
 
                     @NonNull
                     @Override
-                    public GroupLobby.GroupLobbyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                    public GroupLobbyActivity.GroupLobbyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
-                        GroupLobby.GroupLobbyViewHolder viewHolder = new GroupLobbyViewHolder(view);
+                        GroupLobbyActivity.GroupLobbyViewHolder viewHolder = new GroupLobbyViewHolder(view);
                         return viewHolder;
                     }
                 };

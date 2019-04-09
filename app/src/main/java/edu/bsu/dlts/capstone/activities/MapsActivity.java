@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +26,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +37,8 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
-import edu.bsu.dlts.capstone.adapters.AzureBlobAdapter;
-import edu.bsu.dlts.capstone.BlobParams;
 import edu.bsu.dlts.capstone.R;
+import edu.bsu.dlts.capstone.models.TrackToTripPerson;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -106,7 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         endTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(MapsActivity.this, MainMenu.class);
+                Intent intent2 = new Intent(MapsActivity.this, MainMenuActivity.class);
                 startActivity(intent2);
             }
         });
@@ -154,6 +158,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
         }
     }
+
+    public static class AzureBlobAdapter extends AsyncTask<BlobParams, Void, Void> {
+        private static final String storageURL = "http://brstrayer.blob.core.windows.net";
+        private static final String storageContainer = "geojson";
+        private static final String storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=brstrayer;AccountKey=9RqBtAtKXwGsDInFfz2uECfwe3VBymaRriMG9ms7gLjfKJ9ku0uG3MZX7P855AdcOwU72WTnei8q2FMlwcB1MA==;EndpointSuffix=core.windows.net";
+
+        @Override
+        protected Void doInBackground(BlobParams... params) {
+            try{
+                CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
+                CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
+                CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
+                CloudBlockBlob blob = container.getBlockBlobReference("blobTest");
+                blob.uploadText(params[0].geojson);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public static class BlobParams{
+        TrackToTripPerson user;
+        String geojson;
+
+        BlobParams(TrackToTripPerson user, String geojson){
+            this.user = user;
+            this.geojson = geojson;
+        }
+    }
 }
 
 class MyLocationListener implements LocationListener {
@@ -193,8 +228,8 @@ class MyLocationListener implements LocationListener {
                     .zoom(18)                   // Sets the zoom
                     .build();                   // Creates a CameraPosition from the builder
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            BlobParams params = new BlobParams(null, geojson.toString());
-            AzureBlobAdapter blobAdapter = new AzureBlobAdapter();
+            MapsActivity.BlobParams params = new MapsActivity.BlobParams(null, geojson.toString());
+            MapsActivity.AzureBlobAdapter blobAdapter = new MapsActivity.AzureBlobAdapter();
             blobAdapter.execute(params);
         }
     }
