@@ -17,15 +17,26 @@
         <!--android:text="TextView" />-->
 
     <Button
-        android:id="@+id/startTour"
+        android:id="@+id/createTrip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_row="1"
         android:layout_column="1"
-        android:text="START TOUR"
+        android:text="CREATE TRIP"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="170dp"
-        tools:text="Start Tour" />
+        tools:text="Create Trip" />
+
+    <Button
+        android:id="@+id/selectTrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:text="SELECT TRIP"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="170dp"
+        tools:text="Select Trip" />
 
     <Button
         android:id="@+id/prevTour"

@@ -39,6 +39,7 @@ import java.util.Calendar;
 
 import edu.bsu.dlts.capstone.R;
 import edu.bsu.dlts.capstone.models.TrackToTripPerson;
+import edu.bsu.dlts.capstone.models.TripToPerson;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 

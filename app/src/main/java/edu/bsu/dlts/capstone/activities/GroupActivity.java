@@ -73,7 +73,6 @@ public class GroupActivity extends AppCompatActivity implements AsyncPeopleRespo
             String name = person.getFirstName() + " " + person.getLastName();
             tv.setText(name);
             userList.addView(tv);
-
         }
     }
 

@@ -8,7 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +19,7 @@ import edu.bsu.dlts.capstone.R;
 
 public class MainMenuActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInOptions gso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,19 +29,35 @@ public class MainMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Main Menu");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         configureTourButton();
+        configureSelectTripButton();
         configureBrowseToursButton();
         configureSettingsButton();
         configureLogOutButton();
     }
 
     private void configureTourButton(){
-        Button startTour = findViewById(R.id.startTour);
-        startTour.setOnClickListener(new View.OnClickListener() {
+        Button createTrip = findViewById(R.id.createTrip);
+        createTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toTour = new Intent(MainMenuActivity.this, TourActivity.class);
-                startActivity(toTour);
+                Intent toTrip = new Intent(MainMenuActivity.this, NewTripsActivity.class);
+                startActivity(toTrip);
+            }
+        });
+    }
+
+    private void configureSelectTripButton(){
+        Button selectTrip = findViewById(R.id.selectTrip);
+        selectTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toSelect = new Intent(MainMenuActivity.this, SelectTripActivity.class);
+                startActivity(toSelect);
             }
         });
     }
@@ -78,7 +97,6 @@ public class MainMenuActivity extends AppCompatActivity {
         });
     }
 
-    //TODO: Get sign-out working
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {

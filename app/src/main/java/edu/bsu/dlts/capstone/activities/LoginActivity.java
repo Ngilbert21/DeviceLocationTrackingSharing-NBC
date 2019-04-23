@@ -26,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.microsoft.windowsazure.mobileservices.MobileServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,10 +97,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncExistsRespo
 
         mProgressView = findViewById(R.id.login_progress);
 
-        AzureServiceAdapter.Initialize(this);
+        try{
+            AzureServiceAdapter.getInstance();
+        } catch (IllegalStateException e){
+            AzureServiceAdapter.Initialize(this);
+        }
 
-        tableRetriever = new AzureTableRetriever();
-        tableRetriever.delegate = this;
     }
 
     private void signIn() {
@@ -134,6 +138,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncExistsRespo
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userEmail = user.getEmail();
+                            Log.d(TAG, userEmail);
 
                             SharedPreferences pref = getApplicationContext().getSharedPreferences("user", 0);
                             SharedPreferences.Editor editor = pref.edit();
@@ -141,6 +146,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncExistsRespo
                             editor.apply();
 
                             LoginActivity.TableParams params = new LoginActivity.TableParams(userEmail);
+
+                            tableRetriever = new AzureTableRetriever();
+                            tableRetriever.delegate = LoginActivity.this;
 
                             tableRetriever.execute(params);
 
@@ -174,22 +182,20 @@ public class LoginActivity extends AppCompatActivity implements AsyncExistsRespo
 
     public static class AzureTableRetriever extends AsyncTask<TableParams, Void, Person> {
         public AsyncExistsResponse delegate = null;
+        MobileServiceClient client = AzureServiceAdapter.getInstance().getClient();
 
         @Override
         protected Person doInBackground(TableParams... params) {
             List<Person> results = new ArrayList<>();
+            String email = params[0].email;
             try {
-                results = AzureServiceAdapter.getInstance().getClient().getTable(Person.class)
-                        .where()
-                        .field("EmailAddress").eq(params[0].email)
-                        .execute()
-                        .get();
+                results = client.getTable(Person.class).where().field("EmailAddress").eq(email).execute().get();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return (results.get(0));
+            return (results.size() > 0 ? results.get(0) : new Person());
         }
 
         @Override
