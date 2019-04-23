@@ -2,6 +2,8 @@ package edu.bsu.dlts.capstone;
 
 import org.junit.Test;
 
+import edu.bsu.dlts.capstone.models.TrackToTripPerson;
+
 import static org.junit.Assert.*;
 
 public class TrackToTripPersonTest {

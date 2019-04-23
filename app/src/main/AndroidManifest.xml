@@ -22,57 +22,64 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BrandNewGroupActivity"></activity>
-        <activity android:name=".UsersActivity" />
-        <activity android:name=".GroupLobby" />
         <activity
-            android:name=".FindFriendsActivity"
-            android:parentActivityName=".NewGroupActivity" />
-        <activity android:name=".NewGroupActivity" />
+            android:name=".activities.SelectTripActivity"
+            android:label="@string/title_activity_select_group"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.NewUserActivity" />
+        <activity android:name=".activities.NewTripsActivity" />
+        <activity android:name=".activities.NewGroupLobby" />
+        <activity android:name=".activities.BrandNewGroupActivity" />
+        <activity android:name=".activities.UsersActivity" />
+        <activity android:name=".activities.GroupLobbyActivity" />
         <activity
-            android:name=".InvitationActivity"
+            android:name=".activities.FindFriendsActivity"
+            android:parentActivityName=".activities.NewGroupActivity" />
+        <activity android:name=".activities.NewGroupActivity" />
+        <activity
+            android:name=".activities.InvitationActivity"
             android:label="@string/title_activity_invitation"
-            android:parentActivityName=".GroupActivity"
+            android:parentActivityName=".activities.GroupActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.bsu.dlts.capstone.GroupActivity" />
+                android:value="edu.bsu.dlts.capstone.activities.GroupActivity" />
         </activity>
         <activity
-            android:name=".GroupActivity"
+            android:name=".activities.GroupActivity"
             android:label="@string/title_activity_group"
-            android:parentActivityName=".TourActivity"
+            android:parentActivityName=".activities.TourActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.bsu.dlts.capstone.TourActivity" />
+                android:value="edu.bsu.dlts.capstone.activities.TourActivity" />
         </activity>
         <activity
-            android:name=".TourActivity"
+            android:name=".activities.TourActivity"
             android:label="@string/title_activity_tour"
-            android:parentActivityName=".MainMenu"
+            android:parentActivityName=".activities.MainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.bsu.dlts.capstone.MainMenu" />
+                android:value="edu.bsu.dlts.capstone.activities.MainMenuActivity" />
         </activity>
         <activity
-            android:name=".PreviousTours"
+            android:name=".activities.PreviousToursActivity"
             android:label="@string/title_activity_previous_tours"
-            android:parentActivityName=".MainMenu"
+            android:parentActivityName=".activities.MainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.bsu.dlts.capstone.MainMenu" />
+                android:value="edu.bsu.dlts.capstone.activities.MainMenuActivity" />
         </activity>
         <activity
-            android:name=".MainMenu"
+            android:name=".activities.MainMenuActivity"
             android:label="@string/title_activity_main_menu"
-            android:parentActivityName=".LoginActivity"
+            android:parentActivityName=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.bsu.dlts.capstone.LoginActivity" />
+                android:value="edu.bsu.dlts.capstone.activities.LoginActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -87,10 +94,13 @@
             android:value="AIzaSyBK_kQaNGb4WBO2rK0eINvH52bZtWlitP8" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".activities.PreviousMapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.MapsActivity"
+            android:label="Map" />
+        <activity
+            android:name=".activities.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -98,6 +108,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.UserActivity" />
+        <activity android:name=".activities.UpdateUserActivity" />
     </application>
 
 </manifest>

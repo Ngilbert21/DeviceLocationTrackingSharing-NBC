@@ -2,6 +2,8 @@ package edu.bsu.dlts.capstone;
 
 import org.junit.Test;
 
+import edu.bsu.dlts.capstone.models.Person;
+
 import static org.junit.Assert.*;
 
 public class PersonTest {
