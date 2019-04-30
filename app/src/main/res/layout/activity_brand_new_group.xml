@@ -35,7 +35,7 @@
         android:padding="6dip"  >
 
         <EditText
-            android:id="@+id/textNewToDo"
+            android:id="@+id/groupEntry"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -55,7 +55,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listViewToDo"
+        android:id="@+id/groupList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/row_list_users"

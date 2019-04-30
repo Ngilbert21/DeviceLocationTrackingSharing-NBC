@@ -4,10 +4,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import java.util.Objects;
+
 import edu.bsu.dlts.capstone.R;
 
+/**
+ * This class is not used in the current code
+ */
 public class NewGroupLobby extends AppCompatActivity {
-    private String currentGroupName;
     private Toolbar mToolbar;
 
 
@@ -17,11 +21,11 @@ public class NewGroupLobby extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group_lobby);
 
-        currentGroupName = getIntent().getExtras().get("groupName").toString();
+        Objects.requireNonNull(Objects.requireNonNull(getIntent().getExtras()).get("groupName")).toString();
 
-        mToolbar = (Toolbar)findViewById(R.id.find_friends_toolbar);
+        mToolbar = findViewById(R.id.find_friends_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Group Lobby");
 

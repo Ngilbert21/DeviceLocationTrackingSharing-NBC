@@ -1,19 +1,13 @@
 package edu.bsu.dlts.capstone.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,23 +17,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 import com.google.maps.android.data.geojson.GeoJsonPoint;
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
-
 import edu.bsu.dlts.capstone.R;
-import edu.bsu.dlts.capstone.models.TrackToTripPerson;
 
 public class PreviousMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -74,7 +58,7 @@ public class PreviousMapsActivity extends FragmentActivity implements OnMapReady
     }
 
     private void configureFinishButton(){
-        Button endTour = (Button) findViewById(R.id.button1);
+        Button endTour = (Button) findViewById(R.id.endTour);
         endTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

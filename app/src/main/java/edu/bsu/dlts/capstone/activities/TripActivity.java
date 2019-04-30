@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import edu.bsu.dlts.capstone.R;
 
 public class TripActivity extends AppCompatActivity {
@@ -17,13 +19,15 @@ public class TripActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
+
         SharedPreferences pref = getSharedPreferences("user", 0);
         TextView user = findViewById(R.id.user);
         String userStr = pref.getString("firstName", "") + " " + pref.getString("lastName", "");
         user.setText(userStr);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         configureGroupButton();
         configureBeginTourButton();
     }

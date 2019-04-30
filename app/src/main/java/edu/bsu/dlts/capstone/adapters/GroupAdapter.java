@@ -12,6 +12,9 @@ import edu.bsu.dlts.capstone.models.Group;
 import edu.bsu.dlts.capstone.R;
 import edu.bsu.dlts.capstone.activities.BrandNewGroupActivity;
 
+/**
+ * This adapter allows groups to be displayed in a list
+ */
 public class GroupAdapter extends ArrayAdapter<Group> {
     /**
      * Adapter context

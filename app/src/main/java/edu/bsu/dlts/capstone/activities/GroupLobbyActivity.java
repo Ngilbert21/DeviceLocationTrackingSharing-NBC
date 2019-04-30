@@ -19,6 +19,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import edu.bsu.dlts.capstone.models.Contacts;
 import edu.bsu.dlts.capstone.R;
 
+/**
+ * This class is not used in the current code
+ */
 public class GroupLobbyActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;

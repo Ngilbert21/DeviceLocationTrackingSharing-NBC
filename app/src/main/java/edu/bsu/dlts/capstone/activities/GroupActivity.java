@@ -1,10 +1,8 @@
 package edu.bsu.dlts.capstone.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -17,11 +15,11 @@ import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import edu.bsu.dlts.capstone.R;
 import edu.bsu.dlts.capstone.adapters.AzureServiceAdapter;
-import edu.bsu.dlts.capstone.interfaces.AsyncExistsResponse;
 import edu.bsu.dlts.capstone.interfaces.AsyncPeopleResponse;
 import edu.bsu.dlts.capstone.models.Group;
 import edu.bsu.dlts.capstone.models.Person;
@@ -34,34 +32,41 @@ public class GroupActivity extends AppCompatActivity implements AsyncPeopleRespo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-//        SharedPreferences pref = getSharedPreferences("user", 0);
-//        TextView user = findViewById(R.id.editText2);
-//        String userStr = pref.getString("firstName", "") + " " + pref.getString("lastName", "");
-//        user.setText(userStr);
+
         userList = findViewById(R.id.userList);
+
+        // Get all users in the group
         String groupName = getIntent().getStringExtra("groupName");
         TableParams params = new TableParams(groupName);
         AzureTableRetriever tableRetriever = new AzureTableRetriever();
         tableRetriever.delegate = this;
         tableRetriever.execute(params);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         configureAddUserButton();
     }
 
+    /**
+     * Sets button to link to UsersActivity
+     */
     private void configureAddUserButton(){
-        Button addUser = (Button) findViewById(R.id.button12);
+        Button addUser = findViewById(R.id.addUser);
         addUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent7 = new Intent(GroupActivity.this, UsersActivity.class);
-                intent7.putExtra("groupName", getIntent().getStringExtra("groupName"));
-                startActivity(intent7);
+                Intent toUsers = new Intent(GroupActivity.this, UsersActivity.class);
+                toUsers.putExtra("groupName", getIntent().getStringExtra("groupName"));
+                startActivity(toUsers);
             }
         });
     }
 
+    /**
+     * Updates user list after Azure call
+     * @param output - list of users in the group
+     */
     @Override
     public void processFinish(List<Person> output) {
         for (Person person :
@@ -76,18 +81,33 @@ public class GroupActivity extends AppCompatActivity implements AsyncPeopleRespo
         }
     }
 
+    /**
+     * Retrieves every user in the specified group
+     */
     public static class AzureTableRetriever extends AsyncTask<TableParams, Void, List<Person>> {
         public AsyncPeopleResponse delegate = null;
 
+        /**
+         *
+         * @param params - contains the name of the specified group
+         * @return list of users in the group
+         */
         @Override
         protected List<Person> doInBackground(TableParams... params) {
             List<Person> results = new ArrayList<>();
+
+            // Get the current Azure client
             MobileServiceClient client = AzureServiceAdapter.getInstance().getClient();
             try {
+                // Find the group associated with the name in params
                 Group group = client.getTable(Group.class).where().field("Name").eq(params[0].groupName).execute().get().get(0);
                 String groupId = group.getId();
+
+                // Find all users in the group
                 List<UserGroup> userGroups = client.getTable(UserGroup.class).where().field("GroupID").eq(groupId).execute().get();
                 List<String> userIds = new ArrayList<>();
+
+                // Add users to results list
                 for (UserGroup userGroup :
                         userGroups) {
                     userIds.add(userGroup.getUserID());
@@ -96,6 +116,7 @@ public class GroupActivity extends AppCompatActivity implements AsyncPeopleRespo
                         userIds) {
                     results.add(client.getTable(Person.class).lookUp(id).get());
                 }
+
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {

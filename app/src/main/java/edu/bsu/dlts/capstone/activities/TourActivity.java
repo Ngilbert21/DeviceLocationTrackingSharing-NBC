@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import edu.bsu.dlts.capstone.R;
 
 public class TourActivity extends AppCompatActivity {
@@ -17,13 +19,17 @@ public class TourActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tour);
+
         SharedPreferences pref = getSharedPreferences("user", 0);
+
+        // Displays the user's information in the tour
         TextView user = findViewById(R.id.user);
         String userStr = pref.getString("firstName", "") + " " + pref.getString("lastName", "");
         user.setText(userStr);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         configureGroupButton();
         configureBeginTourButton();
     }

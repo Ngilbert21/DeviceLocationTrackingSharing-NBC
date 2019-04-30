@@ -16,13 +16,14 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 import edu.bsu.dlts.capstone.models.Contacts;
 import edu.bsu.dlts.capstone.R;
 
 
 public class FindFriendsActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
     private RecyclerView FindFriendsRecyclerList;
     private DatabaseReference UsersRef;
 
@@ -34,12 +35,12 @@ public class FindFriendsActivity extends AppCompatActivity {
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
-        FindFriendsRecyclerList = (RecyclerView)findViewById(R.id.find_friends_recycler_list);
+        FindFriendsRecyclerList = findViewById(R.id.find_friends_recycler_list);
         FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
-        mToolbar = (Toolbar)findViewById(R.id.find_friends_toolbar);
+        Toolbar mToolbar = findViewById(R.id.find_friends_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Find Friends");
     }
@@ -73,8 +74,7 @@ public class FindFriendsActivity extends AppCompatActivity {
                     @Override
                     public FindFriendViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
-                        FindFriendViewHolder viewHolder = new FindFriendViewHolder(view);
-                        return viewHolder;
+                        return new FindFriendViewHolder(view);
                     }
                 };
 
@@ -89,7 +89,7 @@ public class FindFriendsActivity extends AppCompatActivity {
         TextView userName;
 
 
-        public FindFriendViewHolder(@NonNull View itemView) {
+        FindFriendViewHolder(@NonNull View itemView) {
             super(itemView);
 
             userName = itemView.findViewById(R.id.user_profile_name);

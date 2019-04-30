@@ -165,6 +165,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncExistsRespo
                 });
     }
 
+    /**
+     * Redirects based on whether or not the user is in the database
+     * @param output - the person, or lack thereof, that matches the user
+     */
     @Override
     public void processFinish(Person output) {
         mProgressView.setVisibility(View.INVISIBLE);
@@ -180,10 +184,18 @@ public class LoginActivity extends AppCompatActivity implements AsyncExistsRespo
         }
     }
 
+    /**
+     * Retrieves the person associated with the user
+     */
     public static class AzureTableRetriever extends AsyncTask<TableParams, Void, Person> {
         public AsyncExistsResponse delegate = null;
         MobileServiceClient client = AzureServiceAdapter.getInstance().getClient();
 
+        /**
+         *
+         * @param params - contains the email of the user
+         * @return the person matching the email in params
+         */
         @Override
         protected Person doInBackground(TableParams... params) {
             List<Person> results = new ArrayList<>();

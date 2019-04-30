@@ -40,6 +40,9 @@ public class MainMenuActivity extends AppCompatActivity {
         configureLogOutButton();
     }
 
+    /**
+     * All of the configure methods in here set a button up to link to the appropriate activity
+     */
     private void configureTourButton(){
         Button createTrip = findViewById(R.id.createTrip);
         createTrip.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +100,9 @@ public class MainMenuActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Signs the user out of Google and the app
+     */
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {

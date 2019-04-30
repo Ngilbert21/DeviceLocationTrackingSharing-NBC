@@ -36,35 +36,31 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import edu.bsu.dlts.capstone.R;
 import edu.bsu.dlts.capstone.models.TrackToTripPerson;
-import edu.bsu.dlts.capstone.models.TripToPerson;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
     private JSONObject geojson;
-    private boolean isPrevious;
 
     private Boolean mLocationPermissionGranted = false;
 
-    private Location currentLocation;
-
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-
-    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         getLocationPermission();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        Objects.requireNonNull(mapFragment).getMapAsync(this);
 
         String geojsonStr = getIntent().getStringExtra("geojson");
 
@@ -73,14 +69,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 geojson = new JSONObject(geojsonStr);
                 GeoJsonLayer layer = new GeoJsonLayer(mMap, geojson);
                 layer.addLayerToMap();
-                isPrevious = true;
                 Log.d("MapStat", "isPrevious");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else  {
             geojson = new JSONObject();
-            isPrevious = false;
 
             try {
                 geojson.put("type", "FeatureCollection");
@@ -106,13 +100,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
     private void configureFinishButton(){
-        Button endTour = (Button) findViewById(R.id.button1);
+        Button endTour = findViewById(R.id.endTour);
         endTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(MapsActivity.this, MainMenuActivity.class);
-                startActivity(intent2);
+                Intent toMenu = new Intent(MapsActivity.this, MainMenuActivity.class);
+                startActivity(toMenu);
             }
         });
     }
@@ -121,19 +116,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
 
-        switch (requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if(grantResults.length > 0 ){
-                    for(int i = 0; i < grantResults.length; i++){
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
-                            mLocationPermissionGranted = false;
-                            return;
-                        }
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0) {
+                for (int grantResult : grantResults) {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        mLocationPermissionGranted = false;
+                        return;
                     }
-
-                    mLocationPermissionGranted = true;
-
                 }
+
+                mLocationPermissionGranted = true;
+
             }
         }
     }
@@ -153,15 +146,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener(geojson, mMap);
+        LocationListener locationListener = new MyLocationListener(geojson, mMap);
 
         if (mLocationPermissionGranted && locationManager != null){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
         }
     }
 
+    /**
+     * Adds the geojson data to the blob
+     */
     public static class AzureBlobAdapter extends AsyncTask<BlobParams, Void, Void> {
-        private static final String storageURL = "http://brstrayer.blob.core.windows.net";
         private static final String storageContainer = "geojson";
         private static final String storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=brstrayer;AccountKey=9RqBtAtKXwGsDInFfz2uECfwe3VBymaRriMG9ms7gLjfKJ9ku0uG3MZX7P855AdcOwU72WTnei8q2FMlwcB1MA==;EndpointSuffix=core.windows.net";
 
@@ -181,7 +176,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public static class BlobParams{
+    static class BlobParams{
         TrackToTripPerson user;
         String geojson;
 
@@ -207,28 +202,38 @@ class MyLocationListener implements LocationListener {
 
             LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
             String timestamp = Calendar.getInstance().getTime().toString();
+
+            // Create a JSON object for the GeoJSON data
             try {
                 JSONArray features = geojson.getJSONArray("features");
                 JSONObject feature = new JSONObject();
                 JSONObject geometry = new JSONObject();
                 JSONObject properties = new JSONObject();
+
                 geometry.put("type", "Point");
                 geometry.put("coordinates", new JSONArray("[" + location.getLongitude() + ", " + location.getLatitude() + "]"));
+
                 feature.put("type", "Feature");
                 feature.put("geometry", geometry);
                 properties.put("Timestamp", timestamp);
                 feature.put("properties", properties);
+
                 features.put(feature);
                 geojson.put("features", features);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            // Add location to map
             googleMap.addMarker(new MarkerOptions().position(current).title("Location on " + timestamp));
+
+            // Zoom on current location
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(current)      // Sets the center of the map to Mountain View
                     .zoom(18)                   // Sets the zoom
                     .build();                   // Creates a CameraPosition from the builder
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
             MapsActivity.BlobParams params = new MapsActivity.BlobParams(null, geojson.toString());
             MapsActivity.AzureBlobAdapter blobAdapter = new MapsActivity.AzureBlobAdapter();
             blobAdapter.execute(params);

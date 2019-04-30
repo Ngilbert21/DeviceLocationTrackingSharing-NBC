@@ -10,6 +10,9 @@ import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import edu.bsu.dlts.capstone.adapters.AzureServiceAdapter;
 import edu.bsu.dlts.capstone.models.Person;
 
+/**
+ * This Activity creates a new user
+ */
 public class NewUserActivity extends UserActivity {
 
     @Override

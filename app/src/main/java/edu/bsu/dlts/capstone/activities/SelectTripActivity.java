@@ -47,6 +47,10 @@ public class SelectTripActivity extends AppCompatActivity implements AsyncTripsR
         tripList = findViewById(R.id.tripList);
     }
 
+    /**
+     * Fills the list of trips with all of the trips that the user is in
+     * @param output - the list of trips
+     */
     @Override
     public void processFinish(List<Trip> output) {
         LinearLayout parent = findViewById(R.id.tripList);
@@ -55,6 +59,7 @@ public class SelectTripActivity extends AppCompatActivity implements AsyncTripsR
         itemParams.weight = 1;
         item.setLayoutParams(itemParams);
         item.setOrientation(LinearLayout.HORIZONTAL);
+
         for (Trip trip :
                 output) {
             Log.d("SelectTripActivity", trip.getTripName());
@@ -66,9 +71,11 @@ public class SelectTripActivity extends AppCompatActivity implements AsyncTripsR
             String name = trip.getTripName();
             tv.setText(name);
             item.addView(tv);
+
             Button viewTrip = new Button(this);
             viewTrip.setLayoutParams(inlineparams);
             viewTrip.setText("Select");
+
             viewTrip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -81,8 +88,11 @@ public class SelectTripActivity extends AppCompatActivity implements AsyncTripsR
         }
     }
 
+    /**
+     * Retrieves the trips that the user is in
+     */
     public static class AzureTableRetriever extends AsyncTask<TableParams, Void, List<Trip>> {
-        public AsyncTripsResponse delegate = null;
+        AsyncTripsResponse delegate = null;
 
         @Override
         protected List<Trip> doInBackground(TableParams... params) {

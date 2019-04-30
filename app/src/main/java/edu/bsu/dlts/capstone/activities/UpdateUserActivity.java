@@ -15,6 +15,9 @@ import edu.bsu.dlts.capstone.interfaces.AsyncExistsResponse;
 import edu.bsu.dlts.capstone.interfaces.AsyncPersonResponse;
 import edu.bsu.dlts.capstone.models.Person;
 
+/**
+ * This activity allows the user to change their first and last name in the database
+ */
 public class UpdateUserActivity extends UserActivity implements AsyncPersonResponse {
     AzureTableRetriever tableRetriever;
     SharedPreferences pref;

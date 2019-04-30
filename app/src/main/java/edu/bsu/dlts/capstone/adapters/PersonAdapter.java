@@ -12,6 +12,9 @@ import edu.bsu.dlts.capstone.models.Person;
 import edu.bsu.dlts.capstone.R;
 import edu.bsu.dlts.capstone.activities.UsersActivity;
 
+/**
+ * This adapter allows people to be displayed in a list
+ */
 public class PersonAdapter extends ArrayAdapter<Person> {
     /**
      * Adapter context

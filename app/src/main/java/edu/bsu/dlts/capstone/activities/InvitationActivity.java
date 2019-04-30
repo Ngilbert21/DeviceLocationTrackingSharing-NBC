@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import edu.bsu.dlts.capstone.R;
 
+/**
+ * This class is not used in the current code
+ */
 public class InvitationActivity extends AppCompatActivity {
 
     private String currentGroupName;

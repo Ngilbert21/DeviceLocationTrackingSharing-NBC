@@ -30,16 +30,19 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import edu.bsu.dlts.capstone.adapters.AzureServiceAdapter;
 import edu.bsu.dlts.capstone.R;
 
+/**
+ * This class is not used in the current code
+ */
 public class NewGroupActivity extends AppCompatActivity {
 
     private DatabaseReference RootRef;
     private FirebaseAuth mAuth;
-    private String currentUserID;
     private ListView list_view;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list_of_groups = new ArrayList<>();
@@ -51,14 +54,14 @@ public class NewGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_group);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
+        Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
 
         AzureServiceAdapter.Initialize(this);
 
 
         //Set toolbar and logout / Join Menu
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Group Area");
         setSupportActionBar(toolbar);
 
@@ -72,12 +75,12 @@ public class NewGroupActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String currentGroupName = adapterView.getItemAtPosition(position).toString();
-                Intent intent9 = new Intent(NewGroupActivity.this, GroupLobbyActivity.class);
-                intent9.putExtra("groupName",currentGroupName);
+                Intent toLobby = new Intent(NewGroupActivity.this, GroupLobbyActivity.class);
+                toLobby.putExtra("groupName",currentGroupName);
                 String currentUSERID = mAuth.getCurrentUser().getUid();
                 String Username = mAuth.getCurrentUser().getDisplayName();
                 RootRef.child("Groups").child(currentGroupName).child("groupmembers").child(currentUSERID).child("name").setValue(Username);
-                startActivity(intent9);
+                startActivity(toLobby);
             }
         });
 
@@ -89,11 +92,9 @@ public class NewGroupActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Set<String> set = new HashSet<>();
 
-                Iterator iterator = dataSnapshot.getChildren().iterator();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                while (iterator.hasNext()){
-
-                    set.add(((DataSnapshot)iterator.next()).getKey());
+                    set.add((dataSnapshot1).getKey());
 
                 }
                 list_of_groups.clear();
@@ -110,8 +111,8 @@ public class NewGroupActivity extends AppCompatActivity {
     }
 
     private void InitializeFields() {
-        list_view = (ListView)findViewById(R.id.list_view);
-        arrayAdapter = new ArrayAdapter<String>(NewGroupActivity.this, android.R.layout.simple_list_item_1, list_of_groups);
+        list_view = findViewById(R.id.list_view);
+        arrayAdapter = new ArrayAdapter<>(NewGroupActivity.this, android.R.layout.simple_list_item_1, list_of_groups);
         list_view.setAdapter(arrayAdapter);
     }
 

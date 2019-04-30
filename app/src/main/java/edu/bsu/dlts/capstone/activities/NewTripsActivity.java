@@ -1,11 +1,10 @@
 package edu.bsu.dlts.capstone.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,8 +24,10 @@ import edu.bsu.dlts.capstone.interfaces.AsyncTripsResponse;
 import edu.bsu.dlts.capstone.models.Trip;
 import edu.bsu.dlts.capstone.models.TripToPerson;
 
+/**
+ * This Activity is used to create a new trip
+ */
 public class NewTripsActivity extends AppCompatActivity implements AsyncTripsResponse{
-    private String currentGroupName;
     public EditText name;
     public EditText startTime;
     public EditText endTime;
@@ -37,23 +38,26 @@ public class NewTripsActivity extends AppCompatActivity implements AsyncTripsRes
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_trip);
+
         response = this;
         name = findViewById(R.id.name);
         startTime = findViewById(R.id.startTime);
         endTime = findViewById(R.id.endTime);
         createTrip = findViewById(R.id.createTrip);
+
         createTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Validates input
                 if( TextUtils.isEmpty(name.getText())){
-
                     name.setError( "Trip name is required!" );
-
                 }else if( TextUtils.isEmpty(startTime.getText())){
                     startTime.setError( "Start time is required!" );
                 }else if( TextUtils.isEmpty(endTime.getText())){
                     endTime.setError( "End time is required!" );
-                }else{
+                }
+                else{
                     SharedPreferences pref = getApplicationContext().getSharedPreferences("user", 0);
                     SharedPreferences tripPref = getApplicationContext().getSharedPreferences("trip", 0);
                     SharedPreferences.Editor editor = tripPref.edit();
@@ -65,9 +69,9 @@ public class NewTripsActivity extends AppCompatActivity implements AsyncTripsRes
                     trip.setStartDate(startTime.getText().toString());
                     trip.setEndDate(endTime.getText().toString());
                     trip.setOwnerPersonID(pref.getString("id", ""));
+
                     MobileServiceClient client = AzureServiceAdapter.getInstance().getClient();
-                    Log.d("CREATE TRIP", "Creating trip...");
-                    //                        String tripId = client.getTable(Trip.class).insert(trip).get().getId();
+
                     client.getTable(Trip.class).insert(trip);
 
                     TableParams params = new TableParams(pref.getString("id", ""));
@@ -75,13 +79,17 @@ public class NewTripsActivity extends AppCompatActivity implements AsyncTripsRes
                     tableRetriever.delegate = response;
                     tableRetriever.execute(params);
 
-                    Intent i = new Intent(NewTripsActivity.this, TourActivity.class);
-                    startActivity(i);
+                    Intent toTour = new Intent(NewTripsActivity.this, TourActivity.class);
+                    startActivity(toTour);
                 }
             }
         });
     }
 
+    /**
+     * Adds user to current trip
+     * @param output - the new trip
+     */
     @Override
     public void processFinish(List<Trip> output) {
         Trip trip = output.get(0);
@@ -91,13 +99,17 @@ public class NewTripsActivity extends AppCompatActivity implements AsyncTripsRes
         AzureServiceAdapter.getInstance().getClient().getTable(TripToPerson.class).insert(tripToPerson);
     }
 
+    /**
+     * Retrieves the newly created trip
+     */
     public static class AzureTableRetriever extends AsyncTask<TableParams, Void, List<Trip>> {
-        public AsyncTripsResponse delegate = null;
+        AsyncTripsResponse delegate = null;
 
         @Override
         protected List<Trip> doInBackground(TableParams... params) {
             List<Trip> results = new ArrayList<>();
             MobileServiceClient client = AzureServiceAdapter.getInstance().getClient();
+
             try {
                 String userId = params[0].userId;
                 results = client.getTable(Trip.class).where().field("OwnerPersonID").eq(userId).orderBy("createdAt", QueryOrder.Descending).execute().get();
@@ -115,7 +127,7 @@ public class NewTripsActivity extends AppCompatActivity implements AsyncTripsRes
         }
     }
 
-    public static class TableParams{
+    static class TableParams{
         String userId;
 
         TableParams(String userId){

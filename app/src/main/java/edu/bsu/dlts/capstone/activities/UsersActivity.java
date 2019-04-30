@@ -2,7 +2,6 @@ package edu.bsu.dlts.capstone.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +43,6 @@ import edu.bsu.dlts.capstone.models.Group;
 import edu.bsu.dlts.capstone.models.Person;
 import edu.bsu.dlts.capstone.adapters.PersonAdapter;
 import edu.bsu.dlts.capstone.R;
-import edu.bsu.dlts.capstone.models.Trip;
 import edu.bsu.dlts.capstone.models.UserGroup;
 
 import static com.microsoft.windowsazure.mobileservices.table.query.QueryOperations.val;
@@ -125,11 +123,11 @@ public class UsersActivity extends AppCompatActivity {
             //Init local storage
             initLocalStore().get();
 
-            mTextNewToDo = (EditText) findViewById(R.id.textNewToDo);
+            mTextNewToDo = (EditText) findViewById(R.id.groupEntry);
 
             // Create an adapter to bind the items with the view
             mAdapter = new PersonAdapter(this, R.layout.row_list_users);
-            ListView listViewToDo = (ListView) findViewById(R.id.listViewToDo);
+            ListView listViewToDo = (ListView) findViewById(R.id.groupList);
             listViewToDo.setAdapter(mAdapter);
 
 
